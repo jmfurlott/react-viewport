@@ -4,7 +4,7 @@
   "description": "A react component for handling different viewport widths and heights with fallbacks",
   "main": "dist/ViewportContainer.js",
   "scripts": {
-    "build": "6to5 src -d dist",
+    "build": "6to5 src -d dist --modules commonInterop",
     "test": "npm run build && mocha ./dist/test/**/*.js",
     "prepublish": "npm run test"
   },
