@@ -5,7 +5,7 @@
   "main": "dist/ViewportContainer.js",
   "scripts": {
     "build": "6to5 src -d dist --modules commonInterop",
-    "postbuild": "browserify dist/ViewportContainer.js -o demo/demo.js",
+    "postbuild": "browserify dist/ViewportContainerDemo.js -o demo/demo.js",
     "test": "npm run build && mocha ./dist/test/**/*.js",
     "prepublish": "npm run test"
   },

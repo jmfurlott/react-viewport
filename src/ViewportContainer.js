@@ -1,6 +1,8 @@
 'use strict';
 
 import React from 'react/addons';
+import heightDetection from './heightDetection.js';
+import widthDetection from './widthDetection.js';
 
 let ViewportContainer = React.createClass({ 
 
@@ -18,17 +20,9 @@ let ViewportContainer = React.createClass({
     };
   },
 
-  testVhUnit() {
-    return !true;
-  },
-
-  testVwUnit() {
-    return !true;
-  },
-
   componentDidMount() {
     // Event listeners
-    if(!this.testVhUnit() || !this.testVwUnit()) {
+    if(!heightDetection || !widthDetection) {
       import $ from 'jquery';
       let self = this;
       $(window).resize( function() {
@@ -48,10 +42,8 @@ let ViewportContainer = React.createClass({
   },
 
   render() {
-   
     // Assign classes to the container
     let classes = [ 'ViewportContainer' ];
-
     if(!!this.props.className) {
       classes.push(this.props.className);
     }
@@ -62,7 +54,7 @@ let ViewportContainer = React.createClass({
     var containerStyle = {backgroundColor: 'red'};
     
     // First check if browser compatible with vw or vh, if so use that
-     if(this.testVhUnit()) {
+     if(heightDetection) {
       containerStyle.height = this.props.viewHeight + 'vh';
     } else if(this.state.height) {
         containerStyle.height = this.state.height;
@@ -71,7 +63,7 @@ let ViewportContainer = React.createClass({
 
     }
 
-   if(this.testVwUnit()) {
+   if(widthDetection) {
       containerStyle.width = this.props.viewWidth + 'vw';
     } else if(this.state.width) {
         containerStyle.width = this.state.width;
@@ -91,8 +83,4 @@ let ViewportContainer = React.createClass({
 });
 
 
-React.render(
-  <ViewportContainer viewWidth="50" viewHeight="50" className="test" >Hello world</ViewportContainer>,
-  document.getElementById('demo')
-);
 export default ViewportContainer;
