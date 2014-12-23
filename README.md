@@ -32,10 +32,10 @@ var Component = React.createClass({
 ```
 
 ## Defaults
-===========
+
 If not specified, the `viewHeight` and `viewWidth` variables are set to 100.
 
 
 ## License
-==========
+
 MIT
