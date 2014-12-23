@@ -4,6 +4,13 @@ import React from 'react/addons';
 
 let ViewportContainer = React.createClass({ 
 
+  getInitialState() {
+    return {
+      height: false,
+      width: false,
+    }
+  },
+
   getDefaultProps() {
     return {
       viewHeight: '100',
@@ -12,27 +19,30 @@ let ViewportContainer = React.createClass({
   },
 
   testVhUnit() {
-    return false;
+    return !true;
   },
 
   testVwUnit() {
-    return true;
+    return !true;
   },
 
   componentDidMount() {
     // Event listeners
-    if(!this.testVhUnit()) {
+    if(!this.testVhUnit() || !this.testVwUnit()) {
       import $ from 'jquery';
       let self = this;
       $(window).resize( function() {
         let containerEl = self.refs.container.getDOMNode();
-        let containerHeight = (parseInt(self.props.viewHeight)/100) * window.innerHeight;
         
-        $(containerEl).height(containerHeight);
+        let containerHeight = (parseInt(self.props.viewHeight)/100) * window.innerHeight;
+        self.setState({ height: containerHeight });
+
+        let containerWidth = (parseInt(self.props.viewWidth)/100) * window.innerWidth;
+        self.setState({ width: containerWidth });
       });
     }
   },
-
+  
   componentDidUnmount() {
     $(window).off('resize');
   },
@@ -52,15 +62,22 @@ let ViewportContainer = React.createClass({
     var containerStyle = {backgroundColor: 'red'};
     
     // First check if browser compatible with vw or vh, if so use that
-    if(this.testVhUnit()) {
+     if(this.testVhUnit()) {
       containerStyle.height = this.props.viewHeight + 'vh';
+    } else if(this.state.height) {
+        containerStyle.height = this.state.height;
+    } else {
+      containerStyle.height = (parseInt(this.props.viewHeight)/100) * window.innerHeight;
+
     }
 
-    if(this.testVwUnit()) {
+   if(this.testVwUnit()) {
       containerStyle.width = this.props.viewWidth + 'vw';
+    } else if(this.state.width) {
+        containerStyle.width = this.state.width;
+    } else {
+      containerStyle.width = (parseInt(this.props.viewWidth)/100) * window.innerWidth;
     }
-
-    // Otherwise set up an event listener 
 
     return(
       <div 
@@ -75,7 +92,7 @@ let ViewportContainer = React.createClass({
 
 
 React.render(
-  <ViewportContainer viewHeight="100" className="test" >Hello world</ViewportContainer>,
+  <ViewportContainer viewWidth="50" viewHeight="50" className="test" >Hello world</ViewportContainer>,
   document.getElementById('demo')
 );
 export default ViewportContainer;
