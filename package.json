@@ -5,6 +5,7 @@
   "main": "dist/ViewportContainer.js",
   "scripts": {
     "build": "6to5 src -d dist --modules commonInterop",
+    "postbuild": "browserify dist/ViewportContainer.js -o demo/demo.js",
     "test": "npm run build && mocha ./dist/test/**/*.js",
     "prepublish": "npm run test"
   },
@@ -21,8 +22,10 @@
   "devDependencies": {
     "6to5": "~1.15.0",
     "chai": "~1.10.0",
+    "jquery": "~2.1.3",
     "jsdom": "~1.5.0",
     "mocha": "~2.0.1",
-    "react": "~0.12.2"
+    "react": "0.12.x",
+    "reactify": "~0.17.1"
   }
 }
