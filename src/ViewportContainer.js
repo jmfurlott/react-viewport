@@ -6,8 +6,8 @@ let ViewportContainer = React.createClass({
 
   getDefaultProps() {
     return {
-      viewHeight: 100,
-      viewWidth: 100
+      viewHeight: '100',
+      viewWidth: '100'
     };
   },
 
@@ -23,8 +23,12 @@ let ViewportContainer = React.createClass({
     // Event listeners
     if(!this.testVhUnit()) {
       import $ from 'jquery';
-      $(window).resize(function() {
-        console.log('sf');
+      let self = this;
+      $(window).resize( function() {
+        let containerEl = self.refs.container.getDOMNode();
+        let containerHeight = (parseInt(self.props.viewHeight)/100) * window.innerHeight;
+        
+        $(containerEl).height(containerHeight);
       });
     }
   },
@@ -63,6 +67,7 @@ let ViewportContainer = React.createClass({
         {...this.props}
         className={classes}
         style={containerStyle}
+        ref="container"
       />
     );
   }
@@ -70,7 +75,7 @@ let ViewportContainer = React.createClass({
 
 
 React.render(
-  <ViewportContainer className="test" >Hello world</ViewportContainer>,
+  <ViewportContainer viewHeight="100" className="test" >Hello world</ViewportContainer>,
   document.getElementById('demo')
 );
 export default ViewportContainer;

@@ -15,8 +15,8 @@ var ViewportContainer = React.createClass({
 
   getDefaultProps: function () {
     return {
-      viewHeight: 100,
-      viewWidth: 100
+      viewHeight: "100",
+      viewWidth: "100"
     };
   },
 
@@ -29,13 +29,22 @@ var ViewportContainer = React.createClass({
   },
 
   componentDidMount: function () {
+    var _this = this;
     // Event listeners
     if (!this.testVhUnit()) {
-      var $ = _interopRequire(require('jquery'));
+      var $;
+      (function () {
+        $ = _interopRequire(require('jquery'));
+        var self = _this;
+        $(window).resize(function () {
+          var containerEl = self.refs.container.getDOMNode();
+          console.log("window height: " + window.innerHeight);
+          var containerHeight = (parseInt(self.props.viewHeight) / 100) * window.innerHeight;
+          console.log(containerHeight);
 
-      $(window).resize(function () {
-        console.log("sf");
-      });
+          $(containerEl).height(containerHeight);
+        });
+      })();
     }
   },
 
@@ -69,13 +78,15 @@ var ViewportContainer = React.createClass({
 
     return (React.createElement("div", React.__spread({}, this.props, {
       className: classes,
-      style: containerStyle
+      style: containerStyle,
+      ref: "container"
     })));
   }
 });
 
 
 React.render(React.createElement(ViewportContainer, {
+  viewHeight: "100",
   className: "test"
 }, "Hello world"), document.getElementById("demo"));
 module.exports = ViewportContainer;
