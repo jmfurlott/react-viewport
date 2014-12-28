@@ -1,6 +1,6 @@
 {
   "name": "react-viewport",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A react component for handling different viewport widths and heights with fallbacks",
   "main": "dist/ViewportContainer.js",
   "scripts": {
@@ -9,6 +9,14 @@
     "test": "npm run build && mocha ./dist/test/**/*.js",
     "prepublish": "npm run test"
   },
+  "keywords": [
+    "vw",
+    "vh",
+    "react",
+    "container",
+    "viewheight",
+    "viewwidth"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/jmfurlott/react-viewport.git"
