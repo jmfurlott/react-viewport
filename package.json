@@ -1,6 +1,6 @@
 {
   "name": "react-viewport",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A react component for handling different viewport widths and heights with fallbacks",
   "main": "dist/ViewportContainer.js",
   "scripts": {
