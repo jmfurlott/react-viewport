@@ -1,9 +1,18 @@
 'use strict';
 
-import React from 'react/addons';
-import ViewportContainer from './ViewportContainer.js';
+import React from 'react';
+import ViewportContainer from './ViewportContainer';
+
+global.React = React;
 
 React.render(
-  <ViewportContainer viewWidth="50" viewHeight="50" className="test" >Hello world</ViewportContainer>,
+  <ViewportContainer
+    style={{
+      backgroundColor: 'red',
+      minHeight: '90vh',
+    }}
+  >
+    Hello world
+  </ViewportContainer>,
   document.getElementById('demo')
 );

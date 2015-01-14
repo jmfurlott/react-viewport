@@ -1,86 +1,100 @@
 'use strict';
 
-import React from 'react/addons';
-import heightDetection from './heightDetection.js';
-import widthDetection from './widthDetection.js';
+import React from 'react';
+import assign from 'react/lib/Object.assign';
 
-let ViewportContainer = React.createClass({ 
+let ViewportContainer = React.createClass({
 
   getInitialState() {
     return {
-      height: false,
-      width: false,
-    }
+      viewportHeight: null,
+      viewportWidth: null,
+    };
   },
 
   getDefaultProps() {
     return {
-      viewHeight: '100',
-      viewWidth: '100'
+      style: {},
+
+      // Default to detecting for Modernizr support
+      browserSupportsVh: typeof document === 'undefined' || rootElementHasClass('cssvhunit'),
+      browserSupportsVw: typeof document === 'undefined' || rootElementHasClass('cssvwunit'),
     };
   },
 
   componentDidMount() {
-    // Event listeners
-    if(!heightDetection || !widthDetection) {
-      import $ from 'jquery';
-      let self = this;
-      $(window).resize( function() {
-        let containerEl = self.refs.container.getDOMNode();
-        
-        let containerHeight = (parseInt(self.props.viewHeight)/100) * window.innerHeight;
-        self.setState({ height: containerHeight });
-
-        let containerWidth = (parseInt(self.props.viewWidth)/100) * window.innerWidth;
-        self.setState({ width: containerWidth });
-      });
+    if (!this.props.browserSupportsVh || !this.props.browserSupportsVw) {
+      this.getWindowDimensions();
+      window.addEventListener('resize', this.getWindowDimensions);
     }
   },
-  
+
   componentDidUnmount() {
-    $(window).off('resize');
+    window.removeEventListener('resize', this.getWindowDimensions);
+  },
+
+  getWindowDimensions() {
+    this.setState({
+      viewportHeight: window.innerHeight,
+      viewportWidth: window.innerWidth,
+    });
   },
 
   render() {
-    // Assign classes to the container
-    let classes = [ 'ViewportContainer' ];
-    if(!!this.props.className) {
-      classes.push(this.props.className);
-    }
 
-    classes = classes.join(' ');
+    let style = Object.keys(this.props.style).reduce((result, prop) => {
+      let value = this.props.style[prop];
 
-    // Styling for the container with fallbacks
-    var containerStyle = {backgroundColor: 'red'};
-    
-    // First check if browser compatible with vw or vh, if so use that
-     if(heightDetection) {
-      containerStyle.height = this.props.viewHeight + 'vh';
-    } else if(this.state.height) {
-        containerStyle.height = this.state.height;
-    } else {
-      containerStyle.height = (parseInt(this.props.viewHeight)/100) * window.innerHeight;
+      if (isVhUnit(value)) {
+        if (this.props.browserSupportsVh) {
+          result[prop] = value;
+        } else {
+          result[prop] = `${this.state.viewportHeight * removeViewportUnit(value) / 100}px`;
+        }
+      } else if (isVwUnit(value)) {
+        if (this.props.browserSupportsVw) {
+          result[prop] = value;
+        } else {
+          result[prop] = `${this.state.viewportWidth * removeViewportUnit(value) / 100}px`;
+        }
+      }
 
-    }
+      return result;
+    }, {});
 
-   if(widthDetection) {
-      containerStyle.width = this.props.viewWidth + 'vw';
-    } else if(this.state.width) {
-        containerStyle.width = this.state.width;
-    } else {
-      containerStyle.width = (parseInt(this.props.viewWidth)/100) * window.innerWidth;
-    }
+    style = assign({}, this.props.style, style);
 
-    return(
-      <div 
+    return (
+      <div
         {...this.props}
-        className={classes}
-        style={containerStyle}
-        ref="container"
+        style={style}
       />
     );
   }
 });
 
+function isVhUnit(value) {
+  return typeof value === 'string' && stringEndsWith(value, 'vh');
+}
+
+function isVwUnit(value) {
+  return typeof value === 'string' && stringEndsWith(value, 'vw');
+}
+
+function removeViewportUnit(value) {
+  return value.slice(0, -2);
+}
+
+function stringEndsWith(string, suffix) {
+  return string.indexOf(suffix, string.length - suffix.length) !== -1
+}
+
+function elementHasClass(el, className) {
+  return (' ' + el.className + ' ').indexOf(' ' + className + ' ') > -1;
+}
+
+function rootElementHasClass(className) {
+  return typeof document !== 'undefined' && elementHasClass(document.documentElement, className);
+}
 
 export default ViewportContainer;
