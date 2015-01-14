@@ -17,8 +17,8 @@ let ViewportContainer = React.createClass({
       style: {},
 
       // Default to detecting for Modernizr support
-      browserSupportsVh: rootElementHasClass('cssvhunit'),
-      browserSupportsVw: rootElementHasClass('cssvwunit'),
+      browserSupportsVh: typeof document === 'undefined' || rootElementHasClass('cssvhunit'),
+      browserSupportsVw: typeof document === 'undefined' || rootElementHasClass('cssvwunit'),
     };
   },
 
@@ -94,7 +94,6 @@ function elementHasClass(el, className) {
 }
 
 function rootElementHasClass(className) {
-  console.log(document.documentElement.className);
   return typeof document !== 'undefined' && elementHasClass(document.documentElement, className);
 }
 

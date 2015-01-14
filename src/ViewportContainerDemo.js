@@ -9,8 +9,7 @@ React.render(
   <ViewportContainer
     style={{
       backgroundColor: 'red',
-      height: '50vh',
-      width: '50vw',
+      minHeight: '90vh',
     }}
   >
     Hello world

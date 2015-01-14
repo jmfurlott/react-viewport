@@ -24,8 +24,8 @@ var ViewportContainer = React.createClass({
       style: {},
 
       // Default to detecting for Modernizr support
-      browserSupportsVh: rootElementHasClass("cssvhunit"),
-      browserSupportsVw: rootElementHasClass("cssvwunit") };
+      browserSupportsVh: typeof document === "undefined" || rootElementHasClass("cssvhunit"),
+      browserSupportsVw: typeof document === "undefined" || rootElementHasClass("cssvwunit") };
   },
 
   componentDidMount: function componentDidMount() {
@@ -98,7 +98,6 @@ function elementHasClass(el, className) {
 }
 
 function rootElementHasClass(className) {
-  console.log(document.documentElement.className);
   return typeof document !== "undefined" && elementHasClass(document.documentElement, className);
 }
 
@@ -122,8 +121,7 @@ React.render(React.createElement(
   {
     style: {
       backgroundColor: "red",
-      height: "50vh",
-      width: "50vw" }
+      minHeight: "90vh" }
   },
   "Hello world"
 ), document.getElementById("demo"));
