@@ -19,8 +19,8 @@ var Component = React.createClass({
     render: function() {
         <ViewportContainer
             className="Container"
-            viewHeight="50"
-            viewWidth="50"
+            height="50vh"
+            minWidth="75vw"
         >
 
             ...
@@ -31,10 +31,9 @@ var Component = React.createClass({
 
 ```
 
-## Defaults
+## Breaking changes
 
-If not specified, the `viewHeight` and `viewWidth` variables are set to 100.
-
+`viewHeight` and `viewWidth` are no longer supported, and should just be `height` and `width`.  This change allows greater flexibility to use any css properties such as `min-height` or `min-width`.
 
 ## License
 
