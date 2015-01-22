@@ -6,9 +6,7 @@
   "scripts": {
     "build": "6to5 src -d dist",
     "build-demo": "browserify dist/ViewportContainerDemo.js -o demo/demo.js",
-    "postbuild": "npm run build-demo",
-    "test": "npm run build && mocha ./dist/test/**/*.js",
-    "prepublish": "npm run test"
+    "postbuild": "npm run build-demo"
   },
   "keywords": [
     "vw",
