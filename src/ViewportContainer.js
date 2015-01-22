@@ -29,7 +29,7 @@ let ViewportContainer = React.createClass({
     }
   },
 
-  componentDidUnmount() {
+  componentWillUnmount() {
     window.removeEventListener('resize', this.getWindowDimensions);
   },
 
